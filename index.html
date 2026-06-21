@@ -473,7 +473,6 @@
       <option value="">Selecione um cliente</option>
     </select>
     <button class="btn-new-client" onclick="openNewClientModal()">+ Novo cliente</button>
-    <button class="btn-settings" onclick="openApiKeyScreen(true)" title="Configurar API Key">⚙</button>
   </div>
 </div>
 
@@ -920,17 +919,10 @@ async function sendMessage() {
     content: h.content
   }));
 
-  const apiKey = localStorage.getItem('agentes_apikey');
-  if (!apiKey) { openApiKeyScreen(false); return; }
-
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    const resp = await fetch('https://lightdigital.up.railway.app/messages', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: 'claude-sonnet-4-6',
         max_tokens: 1000,
@@ -1005,10 +997,6 @@ document.getElementById('newClientName').addEventListener('keydown', e => {
 
 loadFromStorage();
 switchAgent(1);
-// Mostrar tela de API key se não tiver chave salva
-if (!localStorage.getItem('agentes_apikey')) {
-  openApiKeyScreen(false);
-}
 </script>
 </body>
 </html>
